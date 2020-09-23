@@ -1,6 +1,7 @@
 package com.app.arime;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
@@ -25,8 +26,8 @@ public class KeyView extends FrameLayout {
     }
 
     private void init() {
+        // Default Layout settings, could be rewrite
         this.setLayoutParams(new LayoutParams(convertDP2PX(40), convertDP2PX(40)));
-
         this.hintText = new AppCompatTextView(getContext());
         this.keyText = new AppCompatTextView(getContext());
         this.keyText.setGravity(Gravity.CENTER);
@@ -40,11 +41,19 @@ public class KeyView extends FrameLayout {
         return (int) ((dp * displayMetrics.density) + 0.5);
     }
 
+    public void setKeyHeightAndWidth(int widthDP, int heightDP) {
+        this.setLayoutParams(new LayoutParams(convertDP2PX(widthDP), convertDP2PX(heightDP)));
+    }
+
     public final AppCompatTextView getHintText() {
         return hintText;
     }
 
     public final AppCompatTextView getKeyText() {
         return keyText;
+    }
+
+    public void setKeyBorder(Drawable border) {
+        this.setBackground(border);
     }
 }

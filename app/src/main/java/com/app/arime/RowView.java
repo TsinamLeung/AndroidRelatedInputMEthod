@@ -18,6 +18,7 @@ public class RowView extends LinearLayoutCompat {
     }
 
     private void init() {
+        this.setOrientation(HORIZONTAL);
     }
 
 }
