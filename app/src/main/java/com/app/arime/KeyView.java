@@ -6,14 +6,15 @@ import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.widget.FrameLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.widget.AppCompatTextView;
+
 
 public class KeyView extends FrameLayout {
-    private AppCompatTextView hintText;
-    private AppCompatTextView keyText;
+    private TextView hintText;
+    private TextView keyText;
 
     public KeyView(@NonNull Context context) {
         super(context);
@@ -28,8 +29,8 @@ public class KeyView extends FrameLayout {
     private void init() {
         // Default Layout settings, could be rewrite
         this.setLayoutParams(new LayoutParams(convertDP2PX(40), convertDP2PX(40)));
-        this.hintText = new AppCompatTextView(getContext());
-        this.keyText = new AppCompatTextView(getContext());
+        this.hintText = new TextView(getContext());
+        this.keyText = new TextView(getContext());
         this.keyText.setGravity(Gravity.CENTER);
         this.hintText.setGravity(Gravity.TOP);
         this.addView(hintText);
@@ -45,11 +46,11 @@ public class KeyView extends FrameLayout {
         this.setLayoutParams(new LayoutParams(convertDP2PX(widthDP), convertDP2PX(heightDP)));
     }
 
-    public final AppCompatTextView getHintText() {
+    public final TextView getHintText() {
         return hintText;
     }
 
-    public final AppCompatTextView getKeyText() {
+    public final TextView getKeyText() {
         return keyText;
     }
 

@@ -34,6 +34,8 @@ public class arimeService extends android.inputmethodservice.InputMethodService 
         border.setCornerRadius(20);
         border.setColor(0xBB00FFFF);
         key.setKeyBorder(border);
+        key.setOnClickListener(kv);
+        key.setOnClickListener(kv);
         row.addView(key);
         row.addView(key2);
         kv.addView(row);
