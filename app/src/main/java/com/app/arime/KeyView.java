@@ -12,6 +12,7 @@ import android.util.TypedValue;
 import android.view.GestureDetector;
 import android.view.Gravity;
 import android.view.MotionEvent;
+import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
@@ -24,11 +25,23 @@ import androidx.core.view.GestureDetectorCompat;
 
 public class KeyView extends FrameLayout {
     private static final String TAG = "arime.KeyView";
+
+    private KeyHandler keyHandler;
     private TextView hintText;
     private TextView keyText;
     private GestureDetectorCompat gestureDetector;
     private PopupWindow popup;
     private KeyPopup popupView;
+
+    private String pressing;
+    private String key;
+
+
+    private String keyLongPressed;
+    private String keySwipeUp;
+    private String keySwipeDown;
+    private String keySwipeLeft;
+    private String keySwipeRight;
 
     public KeyView(@NonNull Context context) {
         super(context);
@@ -42,6 +55,7 @@ public class KeyView extends FrameLayout {
 
     private void init() {
         // Default Layout settings, could be rewrite
+        keyHandler = KeyHandler.getHandler();
         this.setLayoutParams(new LayoutParams(convertDP2PX(40), convertDP2PX(40)));
         this.hintText = new TextView(getContext());
         this.keyText = new TextView(getContext());
@@ -67,8 +81,64 @@ public class KeyView extends FrameLayout {
         return hintText;
     }
 
+    public void setHintText(String text) {
+        hintText.setText(text);
+    }
+
     public final TextView getKeyText() {
         return keyText;
+    }
+
+    public void setKeyText(String text) {
+        keyText.setText(text);
+        if (key == null) {
+            key = text;
+        }
+    }
+
+    // users might want to specify a key displayed as other things
+    // 人 displayed but key 'o' pressed
+    public void setKey(String key) {
+        this.key = key;
+    }
+
+    public void setKeyLongPressed(String keyLongPressed) {
+        this.keyLongPressed = keyLongPressed;
+    }
+
+    public void setKeySwipeUp(String keySwipeUp) {
+        this.keySwipeUp = keySwipeUp;
+    }
+
+    public void setKeySwipeDown(String keySwipeDown) {
+        this.keySwipeDown = keySwipeDown;
+    }
+
+    public void setKeySwipeLeft(String keySwipeLeft) {
+        this.keySwipeLeft = keySwipeLeft;
+    }
+
+    public void setKeySwipeRight(String keySwipeRight) {
+        this.keySwipeRight = keySwipeRight;
+    }
+
+    public void setKeyTextStyle(int sizeDIP, int color, Typeface tf) {
+        keyText.setTextSize(TypedValue.COMPLEX_UNIT_DIP, sizeDIP);
+        keyText.setTypeface(tf);
+        keyText.setTextColor(color);
+        keyText.setGravity(Gravity.CENTER);
+    }
+
+    public String getCurrentPressing() {
+        return pressing;
+    }
+
+    public void setHintTextStyle(int sizeDIP, int color, int gravity, Typeface tf) {
+        hintText.setTextSize(TypedValue.COMPLEX_UNIT_DIP, sizeDIP);
+        hintText.setTypeface(tf);
+        hintText.setTextColor(color);
+        hintText.setGravity(Gravity.CENTER);
+        hintText.setLayoutParams(new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, gravity));
     }
 
     public void setKeyBorder(Drawable border) {
@@ -93,11 +163,15 @@ public class KeyView extends FrameLayout {
     public boolean onTouchEvent(MotionEvent event) {
         switch (event.getAction()) {
             case MotionEvent.ACTION_UP:
-
+                commitKey(getCurrentPressing());
             default:
                 return gestureDetector.onTouchEvent(event);
         }
 
+    }
+
+    protected void commitKey(String currentPressing) {
+        keyHandler.handleKey(currentPressing);
     }
 
     protected class KeyPopup extends LinearLayoutCompat {
@@ -286,6 +360,7 @@ public class KeyView extends FrameLayout {
 
         @Override
         public boolean onDown(MotionEvent e) {
+            pressing = key;
             showPopup();
             return true;
         }
@@ -299,6 +374,7 @@ public class KeyView extends FrameLayout {
         public boolean onSingleTapUp(MotionEvent e) {
             return false;
         }
+
 
         @Override
         public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {

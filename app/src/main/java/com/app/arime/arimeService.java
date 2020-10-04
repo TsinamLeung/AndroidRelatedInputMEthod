@@ -2,10 +2,7 @@ package com.app.arime;
 
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
-import android.util.TypedValue;
-import android.view.Gravity;
 import android.view.View;
-import android.widget.TextView;
 
 import androidx.appcompat.widget.LinearLayoutCompat;
 
@@ -17,23 +14,24 @@ public class arimeService extends android.inputmethodservice.InputMethodService 
         kv.setOrientation(LinearLayoutCompat.VERTICAL);
         RowView row = new RowView(getApplicationContext());
         KeyView key = new KeyView(getApplicationContext());
-        TextView keyText = key.getKeyText();
-        TextView hintText = key.getHintText();
-        keyText.setText("Hello");
-        hintText.setGravity(Gravity.BOTTOM | Gravity.END);
-        keyText.setTextSize(TypedValue.COMPLEX_UNIT_SP, 10);
-        hintText.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
-        keyText.setTextColor(Color.WHITE);
-        hintText.setTextColor(Color.BLUE);
-//        hintText.setBackgroundColor(Color.BLACK);
-        KeyView key2 = new KeyView(getApplicationContext());
-        key2.getKeyText().setText("World");
-//        key2.setBackgroundColor(Color.GREEN);
-        key.setKeyHeightAndWidth(28, 40);
+        key.setKeyText("Hello");
+        key.setKey("h");
+        key.setKeyTextStyle(12, Color.BLUE, null);
+        key.setKeyHeightAndWidth(30, 40);
+
         GradientDrawable border = (GradientDrawable) getApplicationContext().getDrawable(R.drawable.roundedborder);
         border.setCornerRadius(20);
         border.setColor(0xBB00FFFF);
+
         key.setKeyBorder(border);
+
+        KeyView key2 = new KeyView(getApplicationContext());
+        key2.setKeyText("Back");
+        key2.setKeyTextStyle(8, Color.GREEN, null);
+        key2.setKeyHeightAndWidth(40, 40);
+        border.setColor(0xAAFFA822);
+        key2.setKeyBorder(border);
+
         row.addView(key);
         row.addView(key2);
         kv.addView(row);
